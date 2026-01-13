@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+
+# Virtual environment
+agenv/
+
+# Project specific
+*.log
+
+# Config
+config.py
+
+# OS
+.DS_Store
+Thumbs.db
