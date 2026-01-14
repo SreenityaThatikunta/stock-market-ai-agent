@@ -13,3 +13,6 @@ agenv/
 # OS
 .DS_Store
 Thumbs.db
+
+node_modules/
+market-widget/node_modules/
