@@ -1,0 +1,229 @@
+/* Colors (dark background + pastel accents) */
+:root {
+  --bg: #1E1E2E;
+  --card: #2A2A3C;
+  --text: #E8E0F0;
+  --accent: #B8A7E8;
+  --subtle: #9A9AC9;
+  --msg-bg: #363650;
+  --btn-bg: #4A4A6A;
+  --btn-hover: #5A5A7A;
+  --btn-text: #FFFFFF;
+  --dropdown-bg: #363650;
+  --icon-color: #9A9AC9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  background: var(--bg);
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  -webkit-app-region: drag;
+}
+
+.card {
+  width: 260px;
+  height: 330px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Settings icon */
+.settings-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 14px;
+  color: var(--icon-color);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: color 0.2s;
+}
+
+.settings-icon:hover {
+  color: #8ddce6;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 23px;
+  right: 20px;
+  font-size: 18px;
+  color: var(--icon-color);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: color 0.2s;
+  line-height: 1;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  color: #8ddce6;
+}
+
+/* Screen container */
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Mascot */
+.mascot {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.mascot-large {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Stock name */
+#stock {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text);
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Price */
+#price {
+  font-size: 13px;
+  color: var(--accent);
+  margin: 2px 0 6px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Message bubble */
+#msg {
+  background: var(--msg-bg);
+  color: var(--text);
+  font-size: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 210px;
+  text-align: center;
+  margin: 10px 0;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.4;
+}
+
+/* Time */
+#time {
+  font-size: 9px;
+  color: var(--subtle);
+  margin-top: 4px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Selector screen styles */
+.selector-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text);
+  margin: 5px 0 15px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Dropdown wrapper */
+.dropdown-wrapper {
+  position: relative;
+  width: 180px;
+  margin-bottom: 15px;
+}
+
+.dropdown {
+  background: var(--dropdown-bg);
+  color: var(--text);
+  border: none;
+  padding: 8px 30px 8px 12px;
+  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  appearance: none;
+  outline: none;
+}
+
+.dropdown:focus {
+  outline: 1px solid var(--accent);
+}
+
+.dropdown option {
+  background: var(--dropdown-bg);
+  color: var(--text);
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+/* Button */
+.btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 8px 20px;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 6px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+}
+
+/* Hint text */
+.hint {
+  font-size: 9px;
+  color: var(--subtle);
+  margin-top: 15px;
+  font-family: 'Courier New', Courier, monospace;
+}

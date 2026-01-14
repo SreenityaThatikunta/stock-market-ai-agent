@@ -7,8 +7,8 @@ agenv/
 # Project specific
 *.log
 
-# Config
-config.py
+# Environment variables (secrets)
+.env
 
 # OS
 .DS_Store

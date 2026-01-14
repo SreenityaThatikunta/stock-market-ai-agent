@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Market Buddy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <!-- Close button (always visible) -->
+    <span class="close-btn" id="close-btn">&times;</span>
+
+    <!-- Selector Screen -->
+    <div id="selector-screen" class="screen">
+      <img class="mascot mascot-large" src="../mascot.png" alt="mascot" onerror="this.style.display='none'">
+      <h2 class="title">Pick Your Stock</h2>
+      <div class="dropdown-wrapper">
+        <select id="stock-dropdown" class="dropdown"></select>
+        <span class="dropdown-arrow">&#9662;</span>
+      </div>
+      <button id="start-btn" class="btn">Start Tracking</button>
+      <span class="hint">Track price & get alerts</span>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="screen" style="display: none;">
+      <span class="settings-icon" id="settings">&#9881;</span>
+      <img class="mascot" src="../mascot.png" alt="mascot" onerror="this.style.display='none'">
+      <h2 id="stock">—</h2>
+      <p id="price">₹ —</p>
+      <div id="msg">waiting for market data...</div>
+      <span id="time"></span>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

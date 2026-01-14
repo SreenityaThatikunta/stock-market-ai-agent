@@ -1,0 +1,16 @@
+[
+  {"name": "RELIANCE", "symbol": "RELIANCE.NS"},
+  {"name": "TCS", "symbol": "TCS.NS"},
+  {"name": "INFOSYS", "symbol": "INFY.NS"},
+  {"name": "HDFC BANK", "symbol": "HDFCBANK.NS"},
+  {"name": "ICICI BANK", "symbol": "ICICIBANK.NS"},
+  {"name": "WIPRO", "symbol": "WIPRO.NS"},
+  {"name": "BHARTI AIRTEL", "symbol": "BHARTIARTL.NS"},
+  {"name": "ITC", "symbol": "ITC.NS"},
+  {"name": "SBI", "symbol": "SBIN.NS"},
+  {"name": "ASIAN PAINTS", "symbol": "ASIANPAINT.NS"},
+  {"name": "MARUTI", "symbol": "MARUTI.NS"},
+  {"name": "TITAN", "symbol": "TITAN.NS"},
+  {"name": "BAJAJ FINANCE", "symbol": "BAJFINANCE.NS"},
+  {"name": "KOTAK BANK", "symbol": "KOTAKBANK.NS"}
+]

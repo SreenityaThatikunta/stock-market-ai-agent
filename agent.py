@@ -7,7 +7,8 @@ from config import (
     STOCK_NAME,
     PRICE_CHANGE_THRESHOLD,
     VOLUME_SPIKE_FACTOR,
-    CHECK_INTERVAL_SECONDS
+    CHECK_INTERVAL_SECONDS,
+    ALERT_COOLDOWN_SECONDS
 )
 
 from fetcher import fetch_stock_data
@@ -16,18 +17,71 @@ from news_fetcher import fetch_news
 from reasoning import explain_event
 from notifier import notify
 
+# Use absolute path based on script location
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WIDGET_FILE = os.path.join(SCRIPT_DIR, "widget_data.json")
+SELECTED_STOCK_FILE = os.path.join(SCRIPT_DIR, "selected_stock.json")
+
+
+def get_selected_stock():
+    """Read the user's stock selection from JSON file."""
+    if os.path.exists(SELECTED_STOCK_FILE):
+        try:
+            with open(SELECTED_STOCK_FILE) as f:
+                data = json.load(f)
+                name = data.get("name")
+                symbol = data.get("symbol")
+                if name and symbol:
+                    return name, symbol
+        except Exception as e:
+            print(f"[DEBUG] Error reading selected stock: {e}")
+
+    # Fall back to config defaults
+    return STOCK_NAME, STOCK_SYMBOL
+
+
+def write_widget_data(stock, price, message):
+    data = {
+        "stock": stock,
+        "price": round(price, 2),
+        "message": message,
+        "time": datetime.now().strftime("%H:%M:%S")
+    }
+    with open(WIDGET_FILE, "w") as f:
+        json.dump(data, f)
+
 
 def run_agent():
     print("📊 Indian Market AI Agent started")
-    print(f"Monitoring: {STOCK_NAME} ({STOCK_SYMBOL})")
     print("-" * 50)
+
+    current_stock_name = None
+    current_stock_symbol = None
+    last_alert_time = 0  # Track last Telegram alert time
 
     while True:
         try:
-            df = fetch_stock_data(STOCK_SYMBOL)
+            # Check for stock selection changes
+            stock_name, stock_symbol = get_selected_stock()
+
+            # Detect stock change
+            if stock_name != current_stock_name:
+                if current_stock_name is not None:
+                    print(f"🔄 Switching to: {stock_name} ({stock_symbol})")
+                else:
+                    print(f"📈 Monitoring: {stock_name} ({stock_symbol})")
+                current_stock_name = stock_name
+                current_stock_symbol = stock_symbol
+
+            df = fetch_stock_data(current_stock_symbol)
 
             if df.empty:
                 print("⚠️ No data received")
+                write_widget_data(
+                    current_stock_name,
+                    0,
+                    "Waiting for market data..."
+                )
                 time.sleep(CHECK_INTERVAL_SECONDS)
                 continue
 
@@ -49,32 +103,39 @@ def run_agent():
 
             # 🚨 ALERT CONDITION
             if price_signal or volume_signal:
-                news = fetch_news(STOCK_NAME)
+                news = fetch_news(current_stock_name)
                 explanation = explain_event(
-                    STOCK_NAME,
+                    current_stock_name,
                     pct,
                     volume_signal,
                     news
                 )
 
-                message = (
-                    f"🚨 {STOCK_NAME} ALERT\n"
-                    f"📉 Price Change: {pct:.2f}%\n"
-                    f"📊 Volume Spike: {volume_signal}\n"
-                    f"🧠 {explanation}"
-                )
-
-                notify(message)
-
+                # Always update widget immediately
                 write_widget_data(
-                    STOCK_NAME,
+                    current_stock_name,
                     current_price,
                     explanation
                 )
+
+                # Only send Telegram if cooldown has passed
+                now = time.time()
+                if now - last_alert_time >= ALERT_COOLDOWN_SECONDS:
+                    message = (
+                        f"🚨 {current_stock_name} ALERT\n"
+                        f"📉 Price Change: {pct:.2f}%\n"
+                        f"📊 Volume Spike: {volume_signal}\n"
+                        f"🧠 {explanation}"
+                    )
+                    notify(message)
+                    last_alert_time = now
+                else:
+                    remaining = int(ALERT_COOLDOWN_SECONDS - (now - last_alert_time))
+                    print(f"⏳ Alert suppressed (cooldown: {remaining}s remaining)")
             else:
                 # No alert - show current stock status
                 write_widget_data(
-                    STOCK_NAME,
+                    current_stock_name,
                     current_price,
                     f"All steady! Δ {pct:+.2f}%"
                 )
@@ -85,19 +146,6 @@ def run_agent():
             print("❌ Error:", e)
             time.sleep(60)
 
-# Use absolute path based on script location
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-WIDGET_FILE = os.path.join(SCRIPT_DIR, "widget_data.json")
-
-def write_widget_data(stock, price, message):
-    data = {
-        "stock": stock,
-        "price": round(price, 2),
-        "message": message,
-        "time": datetime.now().strftime("%H:%M:%S")
-    }
-    with open(WIDGET_FILE, "w") as f:
-        json.dump(data, f)
 
 if __name__ == "__main__":
     run_agent()
