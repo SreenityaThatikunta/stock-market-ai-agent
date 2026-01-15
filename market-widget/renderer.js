@@ -1,9 +1,16 @@
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
+
+// Shared data directory
+const dataDir = path.join(os.homedir(), ".market-widget");
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
 // File paths
-const dataFile = path.join(__dirname, "../widget_data.json");
-const selectedStockFile = path.join(__dirname, "../selected_stock.json");
+const dataFile = path.join(dataDir, "widget_data.json");
+const selectedStockFile = path.join(dataDir, "selected_stock.json");
 const stocksFile = path.join(__dirname, "stocks.json");
 
 // DOM elements

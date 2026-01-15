@@ -16,11 +16,14 @@ from signals import detect_price_change, detect_volume_spike
 from news_fetcher import fetch_news
 from reasoning import explain_event
 from notifier import notify
+from pathlib import Path
 
-# Use absolute path based on script location
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-WIDGET_FILE = os.path.join(SCRIPT_DIR, "widget_data.json")
-SELECTED_STOCK_FILE = os.path.join(SCRIPT_DIR, "selected_stock.json")
+# Shared data directory
+DATA_DIR = Path.home() / ".market-widget"
+DATA_DIR.mkdir(exist_ok=True)
+
+WIDGET_FILE = DATA_DIR / "widget_data.json"
+SELECTED_STOCK_FILE = DATA_DIR / "selected_stock.json"
 
 
 def get_selected_stock():
